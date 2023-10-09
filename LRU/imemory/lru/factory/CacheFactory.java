@@ -1,26 +1,24 @@
 package imemory.lru.factory;
 
+import imemory.lru.datasource.CacheDataStore;
 import imemory.lru.datasource.Cache;
-import imemory.lru.datasource.CacheOperations;
 import imemory.lru.datasource.LRUCache;
 
 public class CacheFactory {
-    private static CacheOperations cacheOperations;
     private static Cache cache;
 
-    public static CacheOperations createFactory(int max_size, CacheType type) {
-        if (cacheOperations != null)
-            return cacheOperations;
+    public static Cache createFactory(int max_size, CacheType type) {
+        if (cache != null)
+            return cache;
 
-        cache = Cache.createInstance(max_size);
         switch (type) {
             case LRU:
-                cacheOperations = new LRUCache(cache);
+                cache = LRUCache.createCache(max_size);
                 break;
             default:
-                cacheOperations = null;
+                cache = null;
         }
-        return cacheOperations;
+        return cache;
     }
 
 }

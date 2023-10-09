@@ -3,18 +3,17 @@ package imemory.lru.service;
 import java.util.Scanner;
 
 import imemory.lru.datasource.Cache;
-import imemory.lru.datasource.CacheOperations;
 import imemory.lru.dto.Pair;
 import imemory.lru.factory.CacheType;
 import imemory.lru.factory.CacheFactory;
 
-public class CacheService {
+public class CacheDAO {
 
-    private static CacheOperations cacheOperations;
+    private static Cache cache;
     private static Scanner scanner;
 
     public static void initializeService(int max_size, CacheType cacheType) {
-        cacheOperations = CacheFactory.createFactory(max_size, cacheType);
+        cache = CacheFactory.createFactory(max_size, cacheType);
         scanner = new Scanner(System.in);
     }
 
@@ -23,7 +22,7 @@ public class CacheService {
         String key = scanner.next();
         System.out.println("Enter value :");
         String value = scanner.next();
-        Pair pair = cacheOperations.insert(key, value);
+        Pair pair = cache.insert(key, value);
         System.out.println(pair + " is inserted successfully");
 
     }
@@ -31,7 +30,7 @@ public class CacheService {
     public static void fetch() {
         System.out.println("Enter key to fetch :");
         String key = scanner.next();
-        Pair pair = cacheOperations.fetch(key);
+        Pair pair = cache.fetch(key);
         if (pair != null)
             System.out.println(pair + " is fetched successfully");
         else
@@ -40,7 +39,7 @@ public class CacheService {
     }
 
     public static void clear() {
-        cacheOperations.clear();
+        cache.clear();
         System.out.println("Cache is cleared successfully");
     }
 
@@ -48,7 +47,7 @@ public class CacheService {
         System.out.println("Enter key to delete:");
         String key = scanner.next();
 
-        Pair pair = cacheOperations.delete(key);
+        Pair pair = cache.delete(key);
        if (pair != null)
             System.out.println(pair + " is deleted successfully");
         else

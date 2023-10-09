@@ -6,72 +6,79 @@ import java.util.LinkedList;
 
 import imemory.lru.dto.Pair;
 
-public class LRUCache implements  CacheOperations {
+public class LRUCache extends Cache {
 
-    private Cache cache;
     private static Deque<String> keyList;
 
-    public LRUCache(Cache cache){
-        this.cache = cache;
+    private LRUCache(){ 
     }
 
+    public static Cache createCache(int maxSize){
+        if(cache==null){
+            cache = new LRUCache();
+        }
+        cacheDataStore=CacheDataStore.createInstance(maxSize);
+        return cache;
+    }
+
+
     public  void clear() {
-        if (cache.getData() == null)
+        if (cacheDataStore.getData() == null)
             return;
 
-        cache.getData().clear();
+        cacheDataStore.getData().clear();
         if(keyList!=null && keyList.size()>0)
             keyList.clear();
     }
 
     public Pair fetch(String key) {
-        if (cache==null || cache.getData()==null)
+        if (cacheDataStore==null || cacheDataStore.getData()==null)
             return null;
 
         Pair pair = null;
-        if (cache.getData().get(key) == null) {
+        if (cacheDataStore.getData().get(key) == null) {
             return null;
         } else {
             keyList.remove(key);
             keyList.addFirst(key);
-            pair = new Pair(key, cache.getData().get(key));
+            pair = new Pair(key, cacheDataStore.getData().get(key));
         }
         return pair;
     }
 
     public  Pair insert(String key, Object object) {
         Pair pair = null;
-        if (cache==null || cache.getData()==null || keyList == null ) {
-            cache=Cache.createInstance(10);
+        if (cacheDataStore==null || cacheDataStore.getData()==null || keyList == null ) {
+            cacheDataStore=CacheDataStore.createInstance(10);
             keyList = new LinkedList<String>();
-            if (cache.getData() == null) {
-                cache.setData(new HashMap<>());
+            if (cacheDataStore.getData() == null) {
+                cacheDataStore.setData(new HashMap<>());
             }
-        } else if (keyList.size() >= cache.getMax_size()) {
+        } else if (keyList.size() >= cacheDataStore.getMax_size()) {
             String keyRemoved = keyList.removeLast();
-            cache.getData().remove(keyRemoved);
+            cacheDataStore.getData().remove(keyRemoved);
 
         } else {
             keyList.remove(key);
         }
 
         keyList.addFirst(key);
-        cache.getData().put(key, object);
+        cacheDataStore.getData().put(key, object);
         pair = new Pair(key, object);
         return pair;
     }
 
     public  Pair delete(String key) {
-        if (cache==null || cache.getData()==null || keyList == null || keyList.size() == 0)
+        if (cacheDataStore==null || cacheDataStore.getData()==null || keyList == null || keyList.size() == 0)
             return null;
 
         Pair pair = null;
-        if (cache.getData().get(key) == null) {
+        if (cacheDataStore.getData().get(key) == null) {
             return null;
         } else {
-            pair = new Pair(key, cache.getData().get(key));
+            pair = new Pair(key, cacheDataStore.getData().get(key));
             keyList.remove(key);
-            cache.getData().remove(key);
+            cacheDataStore.getData().remove(key);
         }
         return pair;
     }

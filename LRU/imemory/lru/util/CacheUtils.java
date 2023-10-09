@@ -3,7 +3,7 @@ package imemory.lru.util;
 import java.util.Scanner;
 
 import imemory.lru.factory.CacheType;
-import imemory.lru.service.CacheService;
+import imemory.lru.service.CacheDAO;
 
 public class CacheUtils {
 
@@ -15,7 +15,7 @@ public class CacheUtils {
         System.out.println("Enter size of cache : ");
         int maxSize = scanner.nextInt();
 
-        CacheService.initializeService(maxSize, cacheType);
+        CacheDAO.initializeService(maxSize, cacheType);
 
         while (true) {
             System.out.println("1 -- Insert ");
@@ -28,16 +28,16 @@ public class CacheUtils {
             int operation = scanner.nextInt();
             switch (operation) {
                 case 1:
-                    CacheService.insert();
+                    CacheDAO.insert();
                     break;
                 case 2:
-                    CacheService.fetch();
+                    CacheDAO.fetch();
                     break;
                 case 3:
-                    CacheService.delete();
+                    CacheDAO.delete();
                     break;
                 case 4:
-                    CacheService.clear();
+                    CacheDAO.clear();
                     break;
                 case 5:
                     System.exit(0);

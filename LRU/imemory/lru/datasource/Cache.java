@@ -1,34 +1,18 @@
 package imemory.lru.datasource;
 
-import java.util.Map;
+import imemory.lru.dto.Pair;
 
-public class Cache {
+public abstract class Cache {
 
-    private static Cache cache;
-    final private int max_size;
-    private Map<String, Object> data;
+    protected static Cache cache;
+    protected static CacheDataStore cacheDataStore;
 
-    private Cache(int max_size) {
-        this.max_size = max_size;
-    }
+    public abstract void clear();
 
-    public int getMax_size() {
-        return max_size;
-    }
+    public abstract Pair fetch(String key);
 
-    public Map<String, Object> getData() {
-        return data;
-    }
+    public abstract Pair insert(String key, Object object);
 
-    public void setData(Map<String, Object> data) {
-        this.data = data;
-    }
-
-    public static Cache createInstance(int max_size) {
-        if (cache == null) {
-            cache = new Cache(max_size);
-        }
-        return cache;
-    }
+    public abstract Pair delete(String key);
 
 }
