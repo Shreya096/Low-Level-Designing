@@ -1,6 +1,5 @@
 package imemory.lru.datasource;
 
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -8,7 +7,7 @@ import imemory.lru.dto.Pair;
 
 public class LRUCache extends Cache {
 
-    private static Deque<String> keyList;
+    private static LinkedList<String> keyList;
 
     private LRUCache(){ 
     }
